@@ -1,16 +1,22 @@
 body,
-html{
-    
+html {
+    overflow: hidden;
     background-image: url("../images/star_killer.jpg");
     width: 100vw;
     height: 100vh;
     background-position: center;
     background-size: cover;
 
-    #carte{
+    #carte {
         margin-top:20vh;
+        .card-img-top {
+            //!background-image: url("../images/stormtroopers.jpg");
 
-    }    
+        }
+
+       
+
+    }
 
 
 
