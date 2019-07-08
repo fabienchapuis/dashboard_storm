@@ -2,7 +2,7 @@
 
 {% block stylesheets %}{% endblock %}
 
-{% block title 'StormCodeur'%}
+{% block title 'Baseball Club'%}
 
 {% block body %}
 <div id="carte" class="container-flex">
@@ -11,15 +11,15 @@
 <div class="card text-white bg-dark mb-3" style="width: 18rem;">
   <img src="" class="card-img-top" alt="">
   <div class="card-body">
-    <h5 class="card-title">Bienvenue StormCoder</h5>
-    <p class="card-text">Veuillez vous identifier:</p>
+    <h5 class="card-title">Bienvenue</h5>
+    <p class="card-text">Veuillez vous identifiez pour accédez à votre Dashboard:</p>
 <form action="{{ path('home') }}" method="post">
         <div class="form-group">
-            <label for="username">Matricule:</label>
+            <label for="username">Identifiant:</label>
             <input type="text" id="username" name="_username"class="form-control">
         </div>
         <div class="form-group">
-            <label for="password">Password</label>
+            <label for="password">Password:</label>
             <input type="text" id="password" name="_password"class="form-control">
         </div>
     <button type="submit" id="btf" class=" w-25 col-12  btn btn-dark btn-sm d-flex justify-content-right">Login<i class="swg swg-darthvader"></i></button>

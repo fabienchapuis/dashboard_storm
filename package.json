@@ -11,7 +11,7 @@
     "private": true,
     "scripts": {
         "dev-server": "encore dev-server",
-        "dev": "encore dev",
+        "dev": "encore dev --config webpack.config.js",
         "watch": "encore dev --watch",
         "build": "encore production --progress"
     }
