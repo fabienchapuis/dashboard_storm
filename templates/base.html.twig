@@ -10,8 +10,9 @@
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
-
-
+    {% if app.user %}
+    <a href="{{ path ('logout') }}">Logout</a>
+    {% endif %}
 
         {% block body %}{% endblock %}
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" 

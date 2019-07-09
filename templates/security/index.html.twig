@@ -13,16 +13,26 @@
   <div class="card-body">
     <h5 class="card-title">Bienvenue</h5>
     <p class="card-text">Veuillez vous identifiez pour accédez à votre Dashboard:</p>
-<form action="{{ path('home') }}" method="post">
+
+{% if error %}
+<div class="alert alert-danger">
+{{ error.messageKey }}
+</div>
+{% endif %}
+
+
+<form action="{{ path('security_login') }}" method="post">
         <div class="form-group">
             <label for="username">Identifiant:</label>
-            <input type="text" id="username" name="_username"class="form-control">
+            <input type="text" id="username" name="_username"class="form-control" value="{{ last_username }}">
         </div>
         <div class="form-group">
             <label for="password">Password:</label>
             <input type="text" id="password" name="_password"class="form-control">
         </div>
-    <button type="submit" id="btf" class=" w-25 col-12  btn btn-dark btn-sm d-flex justify-content-right">Login<i class="swg swg-darthvader"></i></button>
+    <button type="submit" id="btf" class=" w-25 col-12  btn btn-dark btn-sm d-flex justify-content-right">Login</button>
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate')}}" >
+        <input type="hidden" name="_target_path" value="{{ app.request.get('redirect_to')}}" >
     </form>
   </div>
 </div>
