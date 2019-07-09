@@ -1,42 +1,72 @@
 <?php
+//!!point de retour fonctionnnel
 
 namespace App\Entity;
 
 use Serializable;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+
 /**
+ * 
+ * 
+ * @ORM\Table(name="app_users")
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @UniqueEntity(fields="username", message="Cet identifiant est déjà enregistré en base")
+ * 
  */
 class User implements UserInterface,\Serializable
 {
     /**
      * @ORM\Id()
-     * @ORM\GeneratedValue()
+     *@ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer")
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=25,)
+     * @Assert\NotBlank()
+     * @Assert\Length(max=25)
      */
     private $username;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=64)
      */
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * 
+     * @ORM\Column(type="string", length=60 )
+     * @Assert\NotBlank()
+     * @Assert\Length(max=60)
+     * @Assert\Email()
      */
     private $email;
 
     /**
-     * @ORM\Column(type="string", length=25)
+     * @ORM\Column(type="string", length=12)
      */
     private $telephone;
+
+
+    /**
+     * @ORM\Column(name="is_active", type="boolean")
+     */
+    private $isActive;
+
+
+      
+    public function __construct()
+    {
+        $this->isActive = true;
+    }
+
 
     public function getId(): ?int
     {
@@ -90,6 +120,22 @@ class User implements UserInterface,\Serializable
 
         return $this;
     }
+    public function getIsActive()
+    {
+        return $this->isActive;
+    }
+ 
+    /*
+     * Set isActive
+     */
+    public function setIsActive($isActive)
+    {
+        $this->isActive = $isActive;
+        return $this;
+    }
+
+
+
 
     /**
      * @return(ROLE|string)[] The user Role
@@ -131,7 +177,8 @@ class User implements UserInterface,\Serializable
             $this->username,
             $this->password,
             $this->email,
-            $this->telephone
+            $this->telephone,
+            $this->isActive
         ]);
     }
 
@@ -152,7 +199,8 @@ class User implements UserInterface,\Serializable
             $this->username,
             $this->password,
             $this->email,
-            $this->telephone
+            $this->telephone,
+            $this->isActive
 
         ) = unserialize($serialized, ['allowed_classes' => false]);
     }

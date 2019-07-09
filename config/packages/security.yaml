@@ -13,9 +13,10 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
-            anonymous: true
-            pattern:   ^/
-
+            pattern:    ^/
+            #user_checker: App\Security\UserChecker # activation du UserChecker créé précédemment
+            http_basic: ~
+            
 
 
             logout:
@@ -27,6 +28,8 @@ security:
             form_login:
                 check_path: security_login
                 login_path: security_login
+                csrf_token_generator: security.csrf.token_manager
+
 
     access_control:
         - { path: ^/admin, roles: ROLE_ADMIN }
