@@ -17,7 +17,7 @@ class UserFixtures extends Fixture
             'username' => 'niska',
             'telephone' =>'0625412548',
             'email' => 'fabien.ch@codeur.online',
-            'password' => 'mdp1231@online2019',
+            'password' => 'niska',
             'roles' => [User::ROLE_USER]
         ],
         
@@ -25,7 +25,7 @@ class UserFixtures extends Fixture
             'username' => 'super_admin',
             'telephone' =>'0625412548',
             'email' => 'admin@admin.fr',
-            'password' => 'mdp1231@online2017',
+            'password' => 'admin',
             'roles' => [User::ROLE_ADMIN]
         ]
     ];
