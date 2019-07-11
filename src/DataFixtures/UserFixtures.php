@@ -6,15 +6,41 @@ use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 
 
 class UserFixtures extends Fixture
 {
+
+    private const USERS = [
+        [
+            'username' => 'niska',
+            'telephone' =>'0625412548',
+            'email' => 'fabien.ch@codeur.online',
+            'password' => 'mdp1231@online2019',
+            'roles' => [User::ROLE_USER]
+        ],
+        
+        [
+            'username' => 'super_admin',
+            'telephone' =>'0625412548',
+            'email' => 'admin@admin.fr',
+            'password' => 'mdp1231@online2017',
+            'roles' => [User::ROLE_ADMIN]
+        ]
+    ];
+    
+
+
+
     /**
      * 
      * @var UserPasswordEncoderInterface
      */
     private $encoder;
+
+
+
 
 
 
@@ -24,30 +50,26 @@ class UserFixtures extends Fixture
     }
 
 
-
     public function load(ObjectManager $manager)
     {
-        $user = new User();
-        $user->setUsername('niska');
-        $user->setPassword($this->encoder->encodePassword($user,'niska'));
-        $user->setEmail('fabien.ch@codeur.online');
-        $user->SetTelephone('0654685945');
-        $manager->persist($user);
-        $manager->flush();
-
-        $user = new User(); 
-        $user->setRoles(array('ROLE_USER'));
-        $user->setEnabled(true);
-        $user->setUsername('revan');
-        $user->setPassword($this->encoder->encodePassword($user,'revan'));
-        $user->setEmail('fabien.ch@codeur.online');
-        $user->SetTelephone('0686954682');
-        $manager->persist($user);
-        $manager->flush();
-
-
-
+        $this->loadUsers( $manager );
+        
+        
     }
 
-    
+    private function loadUsers( ObjectManager $manager )
+    {
+        
+        foreach( self::USERS as $userData ){
+            $user = new User();
+            $user->setUsername($userData['username']);
+            $user->setEmail($userData['email']);
+            $user->setTelephone($userData['telephone']);
+            $user->setPassword($this->encoder->encodePassword($user, $userData['password']));
+            $user->setRoles($userData['roles']);
+            
+            $manager->persist( $user );
+        }
+        $manager->flush();
+    }
 }

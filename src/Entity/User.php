@@ -2,15 +2,23 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\Collection;
 use Serializable;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  */
 class User implements UserInterface,\Serializable
 {
+
+    const ROLE_USER = 'ROLE_USER';
+	const ROLE_ADMIN = 'ROLE_ADMIN';
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -19,7 +27,9 @@ class User implements UserInterface,\Serializable
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=50, unique=true)
+     * @Assert\NotBlank()
+     * @Assert\Length(min=5, max=50)
      */
     private $username;
 
@@ -28,20 +38,81 @@ class User implements UserInterface,\Serializable
      */
     private $password;
 
+    /**	
+	* @Assert\NotBlank()
+	* @Assert\Length(min=8, max=4096)
+	*/
+    private $plainPassword;
+    
+
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=60, unique=true)
+     * @Assert\NotBlank()
+     * @Assert\Email()
      */
     private $email;
 
     /**
-     * @ORM\Column(type="string", length=25)
+     * @ORM\Column(type="string", length=15)
      */
     private $telephone;
+    
+
+    /**
+	* var array
+	* @ORM\Column(type="simple_array")
+	*/
+	private $roles;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Reponse", mappedBy="evenement_id")
+     */
+    private $reponses;
+
+
+    /***
+     * 
+     * 
+     * @ORM\ManyToMany(targetEntity="App\Entity\Saison", inversedBy="users")
+     */
+    private $saisons;
+
+
+    public function __construct()
+	{
+		
+		$this->followers = new ArrayCollection();
+
+		$this->roles = [self::ROLE_USER];
+		$this->enabled = false;
+        $this->reponses = new ArrayCollection();
+    }
+    
+
+
+	public function getRoles()
+        {
+            return $this->roles;
+        }
+	
+	public function setRoles( array $roles )
+    {
+        $this->roles = $roles;
+    
+        }
+
+
 
     public function getId(): ?int
     {
         return $this->id;
     }
+
+    public function getSalt()
+	{
+		return null;
+    }
+
 
     public function getUsername(): ?string
     {
@@ -67,6 +138,25 @@ class User implements UserInterface,\Serializable
         return $this;
     }
 
+
+	/**
+	 * @return mixed
+	 */
+	public function getPlainPassword()
+    {
+        return $this->plainPassword;
+        }
+
+    /**
+	 * @param mixed $plainPassword
+	 */	
+	public function setPlainPassword(string $plainPassword): void
+    {
+        $this->plainPassword = $plainPassword;
+        }
+
+
+
     public function getEmail(): ?string
     {
         return $this->email;
@@ -91,28 +181,9 @@ class User implements UserInterface,\Serializable
         return $this;
     }
 
-    /**
-     * @return(ROLE|string)[] The user Role
-     * 
-     * 
-     */
+    
 
-    public function getRoles()
-    {
-        return['ROLE_ADMIN'];
-    }
-
-
-
-    /**
-     * 
-     * @return string|null
-     */
-
-    public function getSalt()
-    {
-        
-    }
+    
 
     public function eraseCredentials()
     {
@@ -155,6 +226,34 @@ class User implements UserInterface,\Serializable
             $this->telephone
 
         ) = unserialize($serialized, ['allowed_classes' => false]);
+    }
+
+    /**
+     * @return Collection|Reponse[]
+     */
+    public function getReponses(): Collection
+    {
+        return $this->reponses;
+    }
+
+    public function addReponse(Reponse $reponse): self
+    {
+        if (!$this->reponses->contains($reponse)) {
+            $this->reponses[] = $reponse;
+            $reponse->addEvenementId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReponse(Reponse $reponse): self
+    {
+        if ($this->reponses->contains($reponse)) {
+            $this->reponses->removeElement($reponse);
+            $reponse->removeEvenementId($this);
+        }
+
+        return $this;
     }
 
 

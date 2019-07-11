@@ -9,8 +9,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class DashBoardController extends AbstractController
 {
     /**
-     * //@Security("is_granted('ROLE_ADMIN')")
-     * @Route("/dash", name="dash")
+     * 
+     * @Route("/admin/dash", name="dash")
      */
     public function index()
     {
