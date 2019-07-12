@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Controller\DashBoardController;
 
 class DashBoardController extends AbstractController
 {
@@ -18,4 +19,10 @@ class DashBoardController extends AbstractController
             'controller_name' => 'DashBoardController',
         ]);
     }
+
+    /**
+     * 
+     * 
+     */
+
 }
