@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use App\Entity\Reponse;
+use App\Entity\Saison;
 use Doctrine\Common\Collections\Collection;
 use Serializable;
 use Doctrine\ORM\Mapping as ORM;
@@ -64,10 +66,6 @@ class User implements UserInterface,\Serializable
 	*/
 	private $roles;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Reponse", mappedBy="evenement_id")
-     */
-    private $reponses;
 
 
     /***
@@ -85,7 +83,7 @@ class User implements UserInterface,\Serializable
 
 		$this->roles = [self::ROLE_USER];
 		$this->enabled = false;
-        $this->reponses = new ArrayCollection();
+        $this->saisons =new ArrayCollection();
     }
     
 
@@ -228,33 +226,6 @@ class User implements UserInterface,\Serializable
         ) = unserialize($serialized, ['allowed_classes' => false]);
     }
 
-    /**
-     * @return Collection|Reponse[]
-     */
-    public function getReponses(): Collection
-    {
-        return $this->reponses;
-    }
-
-    public function addReponse(Reponse $reponse): self
-    {
-        if (!$this->reponses->contains($reponse)) {
-            $this->reponses[] = $reponse;
-            $reponse->addEvenementId($this);
-        }
-
-        return $this;
-    }
-
-    public function removeReponse(Reponse $reponse): self
-    {
-        if ($this->reponses->contains($reponse)) {
-            $this->reponses->removeElement($reponse);
-            $reponse->removeEvenementId($this);
-        }
-
-        return $this;
-    }
 
 
 }

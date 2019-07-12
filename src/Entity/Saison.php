@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\SaisonRepository")
@@ -21,18 +22,9 @@ class Saison
      */
     private $nom;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $user_id;
+    
 
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Evenement",inversedBy="saisons" )
-     * 
-     * 
-     */
-    private $evenements;
 
 
 
@@ -42,6 +34,13 @@ class Saison
      * 
      */
     private $users;
+
+    public function __construct()
+	{
+		
+		$this->users =new ArrayCollection();
+    }
+    
 
     public function getId(): ?int
     {
@@ -60,14 +59,24 @@ class Saison
         return $this;
     }
 
-    public function getUserId(): ?int
+    
+
+    /**
+     * Get the value of users
+     */ 
+    public function getUsers()
     {
-        return $this->user_id;
+        return $this->users;
     }
 
-    public function setUserId(int $user_id): self
+    /**
+     * Set the value of users
+     *
+     * @return  self
+     */ 
+    public function setUsers($users)
     {
-        $this->user_id = $user_id;
+        $this->users = $users;
 
         return $this;
     }
