@@ -68,7 +68,7 @@ class User implements UserInterface,\Serializable
 
 
 
-    /***
+    /**
      * 
      * 
      * @ORM\ManyToMany(targetEntity="App\Entity\Saison", inversedBy="users")

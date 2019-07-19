@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="{{ asset('build/dash.css') }}">{% endblock %}
+{% block body %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="">DashBoard</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+
+        </ul>
+        {% if app.user %}
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a href="{{ path('logout') }}" class="nav-link">Se déconnecter</a>
+            </li>
+        </ul>
+        {% endif %}
+    </div>
+</nav>
+
+<aside>
+    <ul>
+        <li><a href="{{ path('saison_add') }}">Créer une saison</a></li>
+        <li><a href="{{ path('saison_list') }}">Liste des saisons</a></li>
+        <li></li>
+        <li></li>
+    </ul>
+</aside>
+<div class="list" >
+{% for user in users %}
+    {{ user.username }}
+{% endfor %}
+</div>
+
+{% endblock %}

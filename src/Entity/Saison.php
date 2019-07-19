@@ -29,7 +29,7 @@ class Saison
 
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="saisons" )
+     * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="saisons" )
      * 
      * 
      */

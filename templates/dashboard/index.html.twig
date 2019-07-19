@@ -1,21 +1,36 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}Hello DashBoardController!{% endblock %}
+{% block stylesheets %} <link rel="stylesheet" href="{{ asset('build/dash.css') }}">{% endblock %}
+{% block title %}DashBoard{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="">DashBoard</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
+<div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+        
+        </ul>
+        {% if app.user %}
+        <ul class="navbar-nav">
+            <li class="nav-item">
+            <a href="{{ path('logout') }}" class="nav-link">Se déconnecter</a>
+            </li>
+        </ul>
+        {% endif %}
+    </div>
+    </nav>
+    <aside>
     <ul>
-        <li>Your controller at <code><a href="{{ '/var/www/html/src/Controller/DashBoardController.php'|file_link(0) }}">src/Controller/DashBoardController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/var/www/html/templates/dash_board/index.html.twig'|file_link(0) }}">templates/dash_board/index.html.twig</a></code></li>
+    <li><a href="{{ path('saison_add') }}">Créer une saison</a></li>
+    <li><a href="{{ path('saison_add') }}">Liste des saisons</a></li>
+    <li></li>
+    <li></li>
     </ul>
-</div>
+    </aside>
 
+
+    
 {% endblock %}

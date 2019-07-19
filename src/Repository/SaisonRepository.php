@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Saison;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\DBAL\Query\QueryBuilder;
 
 /**
  * @method Saison|null find($id, $lockMode = null, $lockVersion = null)
@@ -19,22 +20,20 @@ class SaisonRepository extends ServiceEntityRepository
         parent::__construct($registry, Saison::class);
     }
 
-    // /**
-    //  * @return Saison[] Returns an array of Saison objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('s.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+     /**
+      * @return Saison[] Returns an array of Saison objects
+      */
+    
+    // public function findAll(): QueryBuilder
+    // {
+    //     return $this->createQueryBuilder('s')
+    //         ->andWhere('s.nom = false')
+    //         ->setMaxResults(4)
+    //         ->getQuery()
+    //         ->getResult()
+    //     ;
+    // }
+
 
     /*
     public function findOneBySomeField($value): ?Saison

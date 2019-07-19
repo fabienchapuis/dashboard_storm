@@ -14,16 +14,19 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-
+use App\Repository\SaisonRepository;
 
 class SaisonController extends AbstractController
 {
 
-    public function __construct( RouterInterface $router )
-    {
-        $this->router = $router;
+    
 
-    }
+
+     /**
+     * @var SaisonRepository
+     */
+
+    private $saisonRepository;
 
 
     /**
@@ -33,21 +36,33 @@ class SaisonController extends AbstractController
     private $router;
 
 
+
+    public function __construct( RouterInterface $router ,SaisonRepository $saisonRepository )
+    {
+        $this->router = $router;
+        $this->saisonRepository = $saisonRepository;
+
+    }
+
+
+
     /**
-     * @Route("/admin/new", name="new")
+     * @Route("/admin/saison", name="saison_list")
      * 
      * 
      */
     public function index()
     {
         
-        return $this->render('dashboard/saison.html.twig');
+        $saisons = $this->saisonRepository ->findAll();
+        return $this->render('dashboard/saison/list.html.twig',
+    ['saisons' => $saisons]);
 
     }
 
     /**
      * 
-     * @Route("/admin/create", name="create")
+     * @Route("/admin/saison/new", name="saison_add")
      */
     public function create( Request $request)
     {
@@ -59,17 +74,32 @@ class SaisonController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($saison);
             $entityManager->flush(); 
-            return new RedirectResponse( $this->router->generate('create'));
+            return new RedirectResponse( $this->router->generate('saison_list'));
 
         }
 
 
-        return $this->render('dashboard/saison.html.twig', [
+        return $this->render('dashboard/saison/saison.html.twig', [
             'saisonForm' => $form->createView()
 
             
         ]);
     }
+
+    /**
+     * @Route("/admin/saison/{id}", name="saison_delete", methods={"DELETE"})
+     */
+    public function delete(Request $request, saison $saison)
+    {
+        if ($this->isCsrfTokenValid('admin/delete'.$saison->getId(), $request->request->get('_token'))){
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($saison);
+            $entityManager->flush();
+        }
+        return new RedirectResponse( $this->router->generate('saison_list'));
+    }
+
+
 
 }
 
