@@ -64,10 +64,10 @@ class SaisonController extends AbstractController
      * 
      * @Route("/admin/saison/new", name="saison_add")
      */
-    public function create( Request $request)
+    public function create(Request $request)
     {
         $saison = new Saison();
-        $form = $this->createForm(SaisonType::class,$saison);
+        $form = $this->createForm(SaisonType::class, $saison);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()){
@@ -86,15 +86,40 @@ class SaisonController extends AbstractController
         ]);
     }
 
+
     /**
-     * @Route("/admin/saison/{id}", name="saison_delete", methods={"DELETE"})
+     * @Route("admin/saison/{id}", name="saison_edit", methods="GET|POST")
+     * 
      */
-    public function delete(Request $request, saison $saison)
+    public function edit (Request $request, Saison $saison)
     {
-        if ($this->isCsrfTokenValid('admin/delete'.$saison->getId(), $request->request->get('_token'))){
+        
+        $form = $this->createForm(SaisonType::class, $saison);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()){
+            $this->getDoctrine()->getManager()->flush();
+            
+
+        }
+        return new RedirectResponse( $this->router->generate('saison_add'));
+
+    }
+
+
+
+
+
+    /**
+     * @Route("/admin/saison/{id}", name="saison_delete", methods="DELETE")
+     */
+    public function delete(Request $request, Saison $saison)
+    {
+        if ($this->isCsrfTokenValid('delete'.$saison->getId(), $request->request->get('_token'))){
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($saison);
             $entityManager->flush();
+            $this->addFlash('success', 'supprimer avec succés !!!!');
         }
         return new RedirectResponse( $this->router->generate('saison_list'));
     }
