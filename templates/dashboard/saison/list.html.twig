@@ -35,9 +35,17 @@
 <div class="list" >
 {% for saison in saisons %}
     {{ saison.nom }}
+    <form action="{{path('saison_delete',{id:saison.id})}}" method="post">
     <input type="hidden" name="_method" value="DELETE">
 <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ saison.id) }}">
-<button class="btn btn-danger">Supprimer</button>
+<button class="btn btn-dark">Supprimer</button>
+</form>
+
+<form action="{{path('saison_edit',{id:saison.id})}}" method="get">
+    <input type="hidden" name="_method" value="get">
+<input type="hidden" name="_token" value="{{ csrf_token('get' ~ saison.id) }}">
+<button class="btn btn-success">editer</button>
+</form>
 {% endfor %}
 
 
